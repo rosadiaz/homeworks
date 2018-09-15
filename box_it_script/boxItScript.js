@@ -15,4 +15,10 @@ function drawTopLine (width) {
     console.log(topLine);
 }
 
+function drawBottomLine (width) {
+    const bottomLine = '\u2514'  + '\u2500' + new Array(width).join('\u2500')  + '\u2500'+ '\u2500' + '\u2518'; // draws the top corner, line and corner of the box
+    console.log(bottomLine);
+}
+
 drawTopLine(maxWidth);
+drawBottomLine(maxWidth);

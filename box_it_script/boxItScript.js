@@ -1,48 +1,50 @@
-const args = process.argv.slice(2);
-// const numberOfArgs = args.lenght;
-// console.log(numberOfArgs); // why is this undefined??
-let maxWidth = 0;
-// console.log(args[0].length);
+const words = process.argv.slice(2);
+let maxWidth = 0
+const topRightCorner = '\u250C\u2500';
+const topLeftCorner = '\u2500\u2510';
+const horizontalDash = '\u2500';
+const bar = '\u2502';
+const openTee = '\u251C\u2500';
+const closeTee ='\u2500\u2500\u2524';
+const bottomLeftCorner = '\u2514\u2500';
+const bottomRightCorner = '\u2500\u2518';
 
-for (let arg of args) {
-    if (arg.length >= maxWidth) {
-        maxWidth = arg.length;
+for (let word of words) {
+    if (word.length >= maxWidth) {
+        maxWidth = word.length;
     } 
 }
-// console.log('Box width will be ' + maxWidth);
 
 function drawTopLine (width) {
-    const topLine = '\u250C'  + '\u2500' + new Array(width).join('\u2500')  + '\u2500'+ '\u2500' + '\u2510'; // draws the top corner, line and corner of the box
-    console.log(topLine);
+    return `${topRightCorner}${makeDashLine(width + 1)}${topLeftCorner}`;
 }
 
 function drawBottomLine (width) {
-    const bottomLine = '\u2514'  + '\u2500' + new Array(width).join('\u2500')  + '\u2500'+ '\u2500' + '\u2518'; // draws the top corner, line and corner of the box
-    console.log(bottomLine);
+    return `${bottomLeftCorner}${makeDashLine(width + 1)}${bottomRightCorner}`;
 }
 
 function drawTextLine (width, text) {
     const space = " ";
-    const textLine = '\u2502' + " "  + text + space.repeat(width - text.length + 1) + '\u2502'; // draws row with text from arguments
-    console.log(textLine);
+    return `${bar} ${text}${space.repeat(width - text.length + 1)}${bar}`;
 }
 
 function drawMiddleLine (width) {
-    const middleLine = '\u251C\u2500' + new Array(width).join('\u2500') + '\u2500\u2500\u2524';
-    console.log(middleLine);
+    return `${openTee}${makeDashLine(width)}${closeTee}`;
 }
 
-function drawBox(width, args) {
-    drawTopLine(width);
-    // console.log(args.length);
-    for (let i=0; i<args.length; i++) {
-        drawTextLine(width, args[i]);
-        if (i<args.length-1){
-            drawMiddleLine(width);
-        }    
+function makeDashLine(width) {
+    return new Array(width).join(horizontalDash);
+}
+
+function drawBox(width, words) {
+    console.log(drawTopLine(width));
+    for (let i = 0; i < words.length; i++) {
+        console.log(drawTextLine(width, words[i]));
+        if (i < words.length-1){
+            console.log(drawMiddleLine(width));
+        }
     }
-    drawBottomLine(width);
+    console.log(drawBottomLine(width));
 }
 
-drawBox(maxWidth, args);
-// console.log(args);
+drawBox(maxWidth, words);

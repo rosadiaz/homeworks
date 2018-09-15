@@ -2,6 +2,7 @@ const args = process.argv.slice(2);
 // const numberOfArgs = args.lenght;
 // console.log(numberOfArgs); // why is this undefined??
 let maxWidth = 0;
+// console.log(args[0].length);
 
 for (let arg of args) {
     if (arg.length >= maxWidth) {
@@ -20,24 +21,28 @@ function drawBottomLine (width) {
     console.log(bottomLine);
 }
 
-function drawTextLine (maxWidth, text) {
-    let space = " ";
-    const textLine = '\u2502' + " "  + text + space.repeat(maxWidth-text.length+1) + '\u2502'; // draws row with text from arguments
+function drawTextLine (width, text) {
+    const space = " ";
+    const textLine = '\u2502' + " "  + text + space.repeat(width - text.length + 1) + '\u2502'; // draws row with text from arguments
     console.log(textLine);
 }
 
-// drawTopLine(maxWidth);
-// drawTextLine(args[0]);
-// drawBottomLine(maxWidth);
+function drawMiddleLine (width) {
+    const middleLine = '\u251C\u2500' + new Array(width).join('\u2500') + '\u2500\u2500\u2524';
+    console.log(middleLine);
+}
 
 function drawBox(width, args) {
-    for (let arg of args) {
-        // console.log(arg);
-        drawTopLine(width);
-        drawTextLine(width, arg);
-        drawBottomLine(width);
+    drawTopLine(width);
+    // console.log(args.length);
+    for (let i=0; i<args.length; i++) {
+        drawTextLine(width, args[i]);
+        if (i<args.length-1){
+            drawMiddleLine(width);
+        }    
     }
+    drawBottomLine(width);
 }
 
 drawBox(maxWidth, args);
-console.log(args);
+// console.log(args);

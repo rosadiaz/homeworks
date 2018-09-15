@@ -10,3 +10,9 @@ for (let arg of args) {
 }
 console.log('Box width will be ' + maxWidth);
 
+function drawTopLine (width) {
+    const topLine = '\u250C'  + '\u2500' + new Array(width).join('\u2500')  + '\u2500'+ '\u2500' + '\u2510'; // draws the top corner, line and corner of the box
+    console.log(topLine);
+}
+
+drawTopLine(maxWidth);

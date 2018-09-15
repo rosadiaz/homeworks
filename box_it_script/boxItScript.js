@@ -1,5 +1,6 @@
 const words = process.argv.slice(2);
 let maxWidth = 0
+// Drawing building blocks
 const topRightCorner = '\u250C\u2500';
 const topLeftCorner = '\u2500\u2510';
 const horizontalDash = '\u2500';

@@ -20,5 +20,11 @@ function drawBottomLine (width) {
     console.log(bottomLine);
 }
 
+function drawTextLine (width) {
+    const textLine = '\u2502' + ' ' + args[0] + ' ' + '\u2502'; // draws row with text from arguments
+    console.log(textLine);
+}
+
 drawTopLine(maxWidth);
+drawTextLine(maxWidth);
 drawBottomLine(maxWidth);

@@ -14,7 +14,7 @@ class Turtle {
       this.y -= steps;
     } else if (this.direction === "-x") {
       this.x -= steps;
-    } else if (this.direction === "y") {
+    } else {
       this.y += steps;
     }
     this.position = [this.x, this.y];
@@ -29,6 +29,8 @@ class Turtle {
       this.direction = "-x";
     } else if (this.direction === "-x") {
       this.direction = "y";
+    } else {
+      this.direction = "x";
     }
     return this;
   }
@@ -40,11 +42,13 @@ class Turtle {
       this.direction = "x";
     } else if (this.direction === "-x") {
       this.direction = "-y";
+    } else {
+      this.direction = "-x";
     }
     return this;
   }
 
-  print(path) {
+  print() {
     const full = '\u2588';
     const empty = " ";
     let maxY = -Infinity;
@@ -75,32 +79,36 @@ class Turtle {
         minX = position[0];
       }
     }
+
     console.log(`Drawing top-left: (${maxY}, ${minX}), bottom-right: (${maxX}, ${minY})`)
 
-    //draw each line
-    // let drawing = "";
-    // for (let x = minX; x <= maxX; x++) {
-    //   for (let y = minY; y <= maxY; y++) {
-    //     console.log(x,y);
-    //     function exists (coordinate, x, y) {
-    //       return coordinate === [x,y];
-    //     }
-
-    //     if (this.path.each(exists)) {
-    //       drawing += `${full}`;
-    //     } else {
-    //       drawing += `${empty}`;
-    //     }
-    //   }
-    //   console.log(drawing);
-    // }
+    // draw each line
+    let drawing = "";
+    for (let y = maxY; y >= minY; y--) { // 0 --> -4
+      console.log(`Row ${y}:`);
+      let row = "";
+      for (let x = minX; x <= maxX; x++) { // 0 --> 6
+        const match = this.path.find(points => {
+          // console.log('points: ' + points);
+          // console.log('[x,y] ' + [x,y]);
+          // console.log(points == [x, y]);
+          return points[0] == x && points[1] == y;
+        });
+        // console.log(match);
+        if (match) { 
+          row += full;
+        } else { 
+          row += empty;
+        }
+      }
+      console.log(row);
+    }
   }
 }
 
 console.log(' ')
 console.log('🐢 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾')
 
-const tommy = new Turtle(0, 0).forward(3).right().forward(2).left().forward(3).right().forward(2);
-console.log('Tommy starts at (0,0), moves forward 3, turns right, moves forward 2, turns lef, moves forward 3, turns right, moves forward 2. He should finish at (6,-4)')
+const tommy = new Turtle(0, 4).forward(3).left().forward(3).right().forward(5).right().forward(8).right().forward(5).right().forward(3).left().forward(3);
 console.log(tommy.path);
-console.log(tommy.print(tommy.path));
+// console.log(tommy.print());

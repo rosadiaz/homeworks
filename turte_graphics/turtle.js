@@ -8,17 +8,19 @@ class Turtle {
   }
 
   forward(steps) {
-    if (this.direction === "x") {
-      this.x += steps;
-    } else if (this.direction === "-y") {
-      this.y -= steps;
-    } else if (this.direction === "-x") {
-      this.x -= steps;
-    } else {
-      this.y += steps;
+    for (let i = 0; i < steps; i++) {
+      if (this.direction === "x") {
+        this.x++;
+      } else if (this.direction === "-y") {
+          this.y--;
+      } else if (this.direction === "-x") {
+        this.x--;
+      } else {
+          this.y++;
+      }
+      this.position = [this.x, this.y];
+      this.path.push(this.position);
     }
-    this.position = [this.x, this.y];
-    this.path.push(this.position);
     return this;
   }
 
@@ -85,16 +87,11 @@ class Turtle {
     // draw each line
     let drawing = "";
     for (let y = maxY; y >= minY; y--) { // 0 --> -4
-      console.log(`Row ${y}:`);
       let row = "";
       for (let x = minX; x <= maxX; x++) { // 0 --> 6
         const match = this.path.find(points => {
-          // console.log('points: ' + points);
-          // console.log('[x,y] ' + [x,y]);
-          // console.log(points == [x, y]);
           return points[0] == x && points[1] == y;
         });
-        // console.log(match);
         if (match) { 
           row += full;
         } else { 
@@ -107,8 +104,8 @@ class Turtle {
 }
 
 console.log(' ')
-console.log('🐢 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾')
+console.log('🐢 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 Tommy goes for a walk ...')
 
-const tommy = new Turtle(0, 4).forward(3).left().forward(3).right().forward(5).right().forward(8).right().forward(5).right().forward(3).left().forward(3);
-console.log(tommy.path);
+const tommy = new Turtle(0, 4).forward(3).left().forward(3).right().forward(5).right().forward(8).right().forward(5).right().forward(3).left().forward(3).print();
+// console.log(tommy.path);
 // console.log(tommy.print());

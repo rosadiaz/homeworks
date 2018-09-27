@@ -1,8 +1,8 @@
 class Turtle {
   constructor(initialX, initialY) {
-    this.x = initialX;
-    this.y = initialY;
-    this.path = [[this.x, this.y]];
+    this.position = {x: initialX, y: initialY}
+    this.path = [];
+    this.addPoint();
     this.direction = "x";
     this.maxY = -Infinity;
     this.minY = Infinity;
@@ -10,57 +10,62 @@ class Turtle {
     this.minX = Infinity;
   }
 
+  addPoint() {
+    this.path.push(Object.assign({}, this.position))
+  }
+
   forward(steps) {
     for (let i = 0; i < steps; i++) {
       if (this.direction == "x") {
-        this.x++;
+        this.position.x++;
       } else if (this.direction === "-y") {
-          this.y--;
+          this.position.y--;
       } else if (this.direction === "-x") {
-        this.x--;
+        this.position.x--;
       } else {
-        this.y++;
+        this.position.y++;
       }
-      this.path.push([this.x, this.y]);
+      this.path.push({x: this.x, y: this.y});
+      this.addPoint();
     }
     return this;
   }
 
   right() {
     switch (this.direction) {
-      case "x": 
+      case "x":
         this.direction = "-y";
         break;
-      case "y": 
+      case "y":
         this.direction = "x";
         break;
-      case "-x": 
+      case "-x":
         this.direction = "y";
         break;
-      case "-y": 
+      case "-y":
         this.direction = "-x";
         break;
-      default: 
+      default:
         return this;
-      } 
+      }
     return this;
   }
 
   left() {
     switch (this.direction) {
-      case "x": 
+      case "x":
         this.direction = "y";
         break;
-      case "-y": 
+      case "-y":
         this.direction = "x";
         break;
-      case "-x": 
+      case "-x":
         this.direction = "-y";
         break;
-      case "y": 
+      case "y":
         this.direction = "-x";
         break;
-      default: 
+      default:
         return this;
     }
     return this;
@@ -68,23 +73,23 @@ class Turtle {
 
   canvasSize() {
     for (let position of this.path) {
-      if (position[1] > this.maxY) {
-        this.maxY = position[1];
+      if (position.y > this.maxY) {
+        this.maxY = position.y;
       }
     }
     for (let position of this.path) {
-      if (position[1] < this.minY) {
-        this.minY = position[1];
+      if (position.y < this.minY) {
+        this.minY = position.y;
       }
     }
     for (let position of this.path) {
-      if (position[0] > this.maxX) {
-        this.maxX = position[0];
+      if (position.x > this.maxX) {
+        this.maxX = position.x;
       }
     }
     for (let position of this.path) {
-      if (position[0] < this.minX) {
-        this.minX = position[0];
+      if (position.x < this.minX) {
+        this.minX = position.x;
       }
     }
     return (this);
@@ -98,9 +103,9 @@ class Turtle {
       let row = "";
       for (let x = this.minX; x <= this.maxX; x++) {
         const match = this.path.find(point => {
-          return point[0] == x && point[1] == y;
+          return point.x == x && point.y == y;
         });
-        if (match) { 
+        if (match) {
           row += full;
         } else {
           row += empty;

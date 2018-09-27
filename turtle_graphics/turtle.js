@@ -3,7 +3,7 @@ class Turtle {
     this.x = initialX;
     this.y = initialY;
     this.path = [[this.x, this.y]];
-    this.direction = "x";
+    this.direction = 0;
     this.maxY = -Infinity;
     this.minY = Infinity;
     this.maxX = -Infinity;
@@ -12,14 +12,14 @@ class Turtle {
 
   forward(steps) {
     for (let i = 0; i < steps; i++) {
-      if (this.direction == "x") {
+      if (this.direction == 0) {
         this.x++;
-      } else if (this.direction === "-y") {
-          this.y--;
-      } else if (this.direction === "-x") {
+      } else if (this.direction == 90) {
+          this.y++;
+      } else if (this.direction == 180) {
         this.x--;
       } else {
-        this.y++;
+        this.y--;
       }
       this.path.push([this.x, this.y]);
     }
@@ -27,41 +27,17 @@ class Turtle {
   }
 
   right() {
-    switch (this.direction) {
-      case "x": 
-        this.direction = "-y";
-        break;
-      case "y": 
-        this.direction = "x";
-        break;
-      case "-x": 
-        this.direction = "y";
-        break;
-      case "-y": 
-        this.direction = "-x";
-        break;
-      default: 
-        return this;
-      } 
+    this.direction -= 90;
+    if (this.direction < 0) {
+      this.direction = 270;
+    }
     return this;
   }
 
   left() {
-    switch (this.direction) {
-      case "x": 
-        this.direction = "y";
-        break;
-      case "-y": 
-        this.direction = "x";
-        break;
-      case "-x": 
-        this.direction = "-y";
-        break;
-      case "y": 
-        this.direction = "-x";
-        break;
-      default: 
-        return this;
+    this.direction += 90;
+    if (this.direction == 360) {
+      this.direction = 0;
     }
     return this;
   }
@@ -100,7 +76,7 @@ class Turtle {
         const match = this.path.find(point => {
           return point[0] == x && point[1] == y;
         });
-        if (match) { 
+        if (match) {
           row += full;
         } else {
           row += empty;

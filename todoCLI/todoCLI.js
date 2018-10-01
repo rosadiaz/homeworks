@@ -32,36 +32,48 @@ function waitingForUser () {
         break;
       default:
         console.log(`Invalid entry\n`);
+        waitingForUser();
         break;
       }
-    waitingForUser();
   });
 }
 
-let list = ""; // pending change to object to have task properties: number, completed, description
 function viewToDoList () {
-  fs.readFile('./toDoList.txt', (err, data) => {
+  fs.readFile('./toDoList.json', (err, json) => {
     if (err) {
       console.log(`Could not read file ${err}`)
     } else {
-      list = data.toString();
-      console.log(list, `\n`)
-      console.log(menu);
+      tasks = JSON.parse(json).tasks;
+      for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
+        if (task.status) { 
+          console.log(`${i+1} [ X ] ${task.description}`);
+        } else {
+          console.log(`${i+1} [   ] ${task.description}`);
+        }
+      }
+      waitingForUser();
     }
   })
 }
 
 function addTask () {
   interface.question(`Enter new task: `, (task) => {
-    list = list.concat(`\n2 [   ] ${task}`); //update to object properties
-    console.log(list);
-    fs.writeFile(`toDoList.txt`, list, (err) => {
-      if(err) {
-        console.log(`Could not write file ${err}`);
-      } else {
-        console.log(`**********\nTo do list updated!!\n`);
-        waitingForUser();
-      }
+    newTask = {description: task, status: false}
+    let myToDoList = { "tasks" :[]};
+    fs.readFile(`./toDoList.json`, (err, json) => {
+      tasksArray = JSON.parse(json).tasks;
+      myToDoList.tasks = tasksArray;
+      myToDoList.tasks.push(newTask);
+      JSONlist = JSON.stringify(myToDoList);
+      fs.writeFile(`toDoList.json`, JSONlist, (err) => {
+        if(err) {
+          console.log(`Could not write file ${err}`);
+        } else {
+          console.log(`**********\nTo do list updated!!\n`);
+          waitingForUser();
+        }
+      })
     })
   })
 }

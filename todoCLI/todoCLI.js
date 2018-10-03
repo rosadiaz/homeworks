@@ -14,6 +14,8 @@ waitingForUser();
 
 function waitingForUser () {
   interface.question(menu, (command) => {
+    let number = parseFloat(command.replace(/c/ || /d/ , ''))
+    command = command.replace(number, '')
     switch (command) {
       case `q`:
         process.exit();
@@ -24,10 +26,11 @@ function waitingForUser () {
       case `n`:
         addTask();
         break;
-      case `cX`:
-        console.log(`You typed cX`);
+      case `c`:
+        completeTask(number);
         break; 
-      case `dX`:
+      case `d`:
+        // deleteTask(number);
         console.log(`You typed dX`);
         break;
       default:
@@ -40,9 +43,11 @@ function waitingForUser () {
 
 function viewToDoList () {
   fs.readFile('./toDoList.json', (err, json) => {
-    if (err) {
-      console.log(`Could not read file ${err}`)
-    } else {
+    if (err) { 
+      console.log(`You don't have a to do List yet. Type n to start one`)
+      waitingForUser();
+    } 
+    else {
       tasks = JSON.parse(json).tasks;
       for (let i = 0; i < tasks.length; i++) {
         const task = tasks[i];
@@ -59,21 +64,54 @@ function viewToDoList () {
 
 function addTask () {
   interface.question(`Enter new task: `, (task) => {
-    newTask = {description: task, status: false}
-    let myToDoList = { "tasks" :[]};
-    fs.readFile(`./toDoList.json`, (err, json) => {
-      tasksArray = JSON.parse(json).tasks;
-      myToDoList.tasks = tasksArray;
-      myToDoList.tasks.push(newTask);
-      JSONlist = JSON.stringify(myToDoList);
-      fs.writeFile(`toDoList.json`, JSONlist, (err) => {
-        if(err) {
-          console.log(`Could not write file ${err}`);
+    if (task === "") { 
+      console.log(`Can't add an empty task, please enter task`)
+      waitingForUser()
+    } else {
+      let newTask = {"description": task, status: false}
+      fs.readFile(`./toDoList.json`, (err, json) => {
+        let myToDoList = { "tasks" :[]};
+        if (err) {
+          writeJSON(newTask, myToDoList)
         } else {
-          console.log(`**********\nTo do list updated!!\n`);
-          waitingForUser();
+          tasksArray = JSON.parse(json).tasks;
+          myToDoList.tasks = tasksArray;
+          writeJSON(newTask, myToDoList);
         }
       })
-    })
+    }
+  })
+}
+
+function writeJSON (newTask, myToDoList) {
+  myToDoList.tasks.push(newTask);
+  JSONlist = JSON.stringify(myToDoList);
+  fs.writeFile(`toDoList.json`, JSONlist, (err) => {
+    if(err) {
+      console.log(`Could not write file ${err}`);
+    } else {
+      console.log(`**********\nTo do list updated!!\n`);
+      waitingForUser();
+    }
+  })
+}
+
+function completeTask (num) {
+  interface.question(`Are you sure you want to complete task ${num}? Type 'y' or 'n'`, (confirmation) => {
+    console.log(`You typed ${confirmation}`)
+    // if (confirmation == 'y') {
+    //   fs.readFile
+    //   ('./toDoList.json', (err, json) => {
+    //     if (err) { console.log(`Could not read file ${err}`)}
+    //     else {
+    //       tasks = JSON.parse(json).tasks;
+    //       tasks[num].status = true;
+    //       console.log( `${tasks[num].description} COMPLETED!`)
+    //     }
+    //   })
+    // } else {
+    waitingForUser();
+    // }
+
   })
 }

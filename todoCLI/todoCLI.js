@@ -72,19 +72,20 @@ function addTask () {
       fs.readFile(`./toDoList.json`, (err, json) => {
         let myToDoList = { "tasks" :[]};
         if (err) {
-          writeJSON(newTask, myToDoList)
+          myToDoList.tasks.push(newTask)
+          writeJSON(myToDoList)
         } else {
           tasksArray = JSON.parse(json).tasks;
           myToDoList.tasks = tasksArray;
-          writeJSON(newTask, myToDoList);
+          myToDoList.tasks.push(newTask)
+          writeJSON(myToDoList);
         }
       })
     }
   })
 }
 
-function writeJSON (newTask, myToDoList) {
-  myToDoList.tasks.push(newTask);
+function writeJSON (myToDoList) {
   JSONlist = JSON.stringify(myToDoList);
   fs.writeFile(`toDoList.json`, JSONlist, (err) => {
     if(err) {
@@ -97,21 +98,21 @@ function writeJSON (newTask, myToDoList) {
 }
 
 function completeTask (num) {
-  interface.question(`Are you sure you want to complete task ${num}? Type 'y' or 'n'`, (confirmation) => {
-    console.log(`You typed ${confirmation}`)
-    // if (confirmation == 'y') {
-    //   fs.readFile
-    //   ('./toDoList.json', (err, json) => {
-    //     if (err) { console.log(`Could not read file ${err}`)}
-    //     else {
-    //       tasks = JSON.parse(json).tasks;
-    //       tasks[num].status = true;
-    //       console.log( `${tasks[num].description} COMPLETED!`)
-    //     }
-    //   })
-    // } else {
-    waitingForUser();
-    // }
+  interface.question(`Are you sure you want to complete task ${num}? Type 'y' or 'n' `, (confirmation) => {
+    if (confirmation == 'y') {
+      fs.readFile('./toDoList.json', (err, json) => {
+        let myToDoList = { "tasks" :[]};
+        tasksArray = JSON.parse(json).tasks;
+        myToDoList.tasks = tasksArray;
+        if (err) { console.log(`Could not read file ${err}`)}
+        else {
+          myToDoList.tasks[num-1].status = true;
+          writeJSON(myToDoList);
+          console.log( `${tasks[num-1].description} ... COMPLETED!`)
+        }
+        waitingForUser();
+      })
+    }
 
   })
 }

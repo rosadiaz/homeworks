@@ -2,7 +2,6 @@ const rl = require(`readline`);
 const fs = require(`fs`);
 
 const menu= `(V) View ✏︎ (n) New ✏︎ (cX) Complete  ✏︎  (dX) Delete ✏︎ (q) Quit\n`;
-const completed = "\u2713"
 
 console.log(`\n\nWelcome to Todo CLI!\n----------------------`);
 const interface = rl.createInterface ( {
@@ -14,7 +13,7 @@ waitingForUser();
 
 function waitingForUser () {
   interface.question(menu, (command) => {
-    let number = parseFloat(command.replace(/c/ || /d/ , ''))
+    let number = parseFloat(command.replace(/[cd]/ , ''))
     command = command.replace(number, '')
     switch (command) {
       case `q`:
@@ -30,8 +29,8 @@ function waitingForUser () {
         completeTask(number);
         break; 
       case `d`:
-        // deleteTask(number);
-        console.log(`You typed dX`);
+        deleteTask(number);
+        // console.log(`You typed dX`);
         break;
       default:
         console.log(`Invalid entry\n`);
@@ -44,8 +43,8 @@ function waitingForUser () {
 function viewToDoList () {
   fs.readFile('./toDoList.json', (err, json) => {
     if (err) { 
-      console.log(`You don't have a to do List yet. Type n to start one`)
-      waitingForUser();
+      console.log(`\n   ¯\\\_(ツ)_/¯      You haven't started a list yet. Type 'n' to start one\n`)
+      // waitingForUser();
     } 
     else {
       tasks = JSON.parse(json).tasks;
@@ -57,8 +56,9 @@ function viewToDoList () {
           console.log(`${i+1} [   ] ${task.description}`);
         }
       }
-      waitingForUser();
+      // waitingForUser();
     }
+    waitingForUser();
   })
 }
 
@@ -75,13 +75,14 @@ function addTask () {
           myToDoList.tasks.push(newTask)
           writeJSON(myToDoList)
         } else {
-          tasksArray = JSON.parse(json).tasks;
-          myToDoList.tasks = tasksArray;
+          myToDoList.tasks = JSON.parse(json).tasks;
           myToDoList.tasks.push(newTask)
           writeJSON(myToDoList);
         }
+        console.log(`                           . . . . . . task added uccessfuly!!!\n`)
       })
     }
+    // waitingForUser()
   })
 }
 
@@ -91,27 +92,61 @@ function writeJSON (myToDoList) {
     if(err) {
       console.log(`Could not write file ${err}`);
     } else {
-      console.log(`**********\nTo do list updated!!\n`);
+      // console.log(`**********\nTo do list updated!!\n`);
       waitingForUser();
     }
   })
 }
 
 function completeTask (num) {
-  interface.question(`Are you sure you want to complete task ${num}? Type 'y' or 'n' `, (confirmation) => {
-    if (confirmation == 'y') {
+  interface.question(`Are you sure you want to complete task ${num}? Type 'y' or 'n': `, (confirmation) => {
+    if (confirmation.includes('y')) {
       fs.readFile('./toDoList.json', (err, json) => {
-        let myToDoList = { "tasks" :[]};
-        tasksArray = JSON.parse(json).tasks;
-        myToDoList.tasks = tasksArray;
-        if (err) { console.log(`Could not read file ${err}`)}
-        else {
-          myToDoList.tasks[num-1].status = true;
-          writeJSON(myToDoList);
-          console.log( `${tasks[num-1].description} ... COMPLETED!`)
+        if (err) { 
+          console.log(`\n   ¯\\\_(ツ)_/¯      You haven't started a list yet. Type 'n' to start one\n`)
+        } else {
+          let myToDoList = { "tasks" :[]};
+          myToDoList.tasks = JSON.parse(json).tasks;
+          if (myToDoList.tasks[num-1] == undefined) {
+            console.log(`\n         Nice try smart ass ! ╭∩╮ (òÓ,) ╭∩╮\n`)
+            waitingForUser();
+          } else {
+            myToDoList.tasks[num-1].status = true;
+            writeJSON(myToDoList);
+            console.log( `\n      ┏(^-^)┛┗(^-^)┓    ${tasks[num-1].description} ... COMPLETED!\n`)
+          }
         }
-        waitingForUser();
       })
+    } else {
+      console.log(`       Ok ¯\\\_(ツ)_/¯\n`)
+      waitingForUser();
+    }
+
+  })
+}
+
+function deleteTask (num) {
+  interface.question(`Are you sure you want to permanently delete task ${num}? Type 'y' or 'n': `, (confirmation) => {
+    if (confirmation.includes('y')) {
+      fs.readFile('./toDoList.json', (err, json) => {
+        if (err) { 
+          console.log(`\n   ¯\\\_(ツ)_/¯      You haven't started a list yet. Type 'n' to start one\n`)
+        } else {
+          let myToDoList = { "tasks" :[]};
+          myToDoList.tasks = JSON.parse(json).tasks;
+          if (myToDoList.tasks[num-1] == undefined) {
+            console.log(`\n         Nice try smart ass ! ╭∩╮ (òÓ,) ╭∩╮\n`)
+            waitingForUser();
+          } else {
+            myToDoList.tasks.splice(num-1,1);
+            writeJSON(myToDoList);
+            console.log( `\n      ${tasks[num-1].description} ... deleted forever!\n`)
+          }
+        }
+      })
+    } else {
+      console.log(`       Ok ¯\\\_(ツ)_/¯\n`)
+      waitingForUser();
     }
 
   })

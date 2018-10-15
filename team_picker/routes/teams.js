@@ -68,7 +68,6 @@ router.get("/teams/:id/edit", (req, res) => {
 })
 router.patch("/teams/:id", (req, res) => {
   const id = req.params.id;
-  console.log(` req.params.id: ${req.params.id} 🖕`)
   knex("cohorts")
     .where("id", id)
     .update({
@@ -81,5 +80,15 @@ router.patch("/teams/:id", (req, res) => {
     });
 });
 
+// Delete cohort
+router.delete("/teams/:id", (req, res) => {
+  const id = req.params.id;
+  knex("cohorts")
+    .where("id", id)
+    .del()
+    .then(() => {
+      res.redirect("/cohorts");
+    });
+});
 
 module.exports = router;

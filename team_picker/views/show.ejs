@@ -49,7 +49,7 @@
                 <% for (let member of randomizedMembersArray.splice(0,membersPerTeam)) { %>
                   <li class="card-text"><%=member%></li>
                 <% } %>
-                <% if (randomizedMembersArray.length > 0 && randomizedMembersArray.length < randomizedMembersArray.length / quantity) { %>
+                <% if (randomizedMembersArray.length > 0 && randomizedMembersArray.length < membersPerTeam) { %>
                   <% for (let member of randomizedMembersArray) { %>
                     <li class="card-text"><%=member%></li>
                   <% } %>
@@ -60,7 +60,7 @@
         </div>
       <% } %>
     <% } else {%>
-      <% const totalTeams = Math.round(randomizedMembersArray.length / quantity) %>
+      <% const totalTeams = Math.ceil(randomizedMembersArray.length / quantity) %>
       <% for (let i = 1; i <= totalTeams; i++) { %>
         <div class="col-sm-3">
           <div class="card">
@@ -78,6 +78,5 @@
     <% } %>
   </div>
 <% } %>
-
 
 <%- include('./partials/footer') %>

@@ -1,0 +1,24 @@
+<%- include('./partials/header') %>
+
+<h1>Edit Cohort</h1>
+
+<form action="/teams/<%= cohort.id %>" method="POST">
+<input type="hidden" name="_method" value="PATCH">
+  <div class="form-group">
+    <div class="form-group">
+      <label for="name">Cohort Name</label>
+      <input type="text" class="form-control" name="name" value="<%= cohort.name %>">
+    </div>
+    <div class="form-group">
+      <label for="logoUrl">Cohort Logo</label>
+      <input type="text" class="form-control" name="logoUrl" value="<%= cohort.logoUrl %>">
+    </div>
+    <div class="form-group">
+      <label for="members">Cohort Members</label>
+      <input type="text" class="form-control" name="members" value="<%= cohort.members %>">
+    </div>
+  <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+
+<%- include('./partials/footer') %>

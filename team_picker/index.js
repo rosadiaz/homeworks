@@ -12,11 +12,25 @@ app.use(morgan('dev'));
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
-const postsRouter = require("./routes/teams");
-app.use("/", postsRouter);
+
 // Havent installed
 // const cookieParser = require('cookie-parser');
 // app.use(cookieParser());
+
+const methodOverride = require("method-override");
+app.use(
+  methodOverride((req, res) => {
+    if (typeof req.body === "object" && req.body._method) {
+      const httpMethod = req.body._method;
+      delete req.body._method;
+      console.log(`method-override: ${httpMethod}`)
+      return httpMethod;
+    }
+  })
+);
+
+const postsRouter = require("./routes/teams");
+app.use("/", postsRouter);
 
 const PORT = 7000;
 app.listen(PORT, () => {

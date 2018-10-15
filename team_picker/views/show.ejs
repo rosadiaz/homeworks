@@ -1,3 +1,83 @@
 <%- include('./partials/header') %>
-<h1> Team display </h1>
+
+<img class="card-img-top logo ml-auto mr-auto" src="<%=cohort.logoUrl%>" alt="Card image cap">
+<h1><%=cohort.name%> </h1>
+<ul>
+  <% for (let member of cohort.members.split(",")) { %>
+    <li class="card-text"><%=member%></li>
+  <% } %>
+</ul>
+<div class="d-flex">
+  <a href="/teams/<%= cohort.id %>/edit" class="btn btn-outline-success btn-sm mr-2">Edit</a>
+  <form action="/teams/<%= cohort.id %>" METHOD="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="Delete" class="btn btn-sm btn-outline-danger">
+  </form>
+</div>
+<br>
+<div>
+  <h4>Team Picker</h3>
+  <form action="/teams" method="POST">
+    <input type="hidden" name="id" value="<%= cohort.id %>">
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <select class="form-control" name="pickerMethod">
+          <option selected>Choose...</option>
+          <option value="totalTeams">How many teams?</option>
+          <option value="membersPerTeam">How many members per team?</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <input type="text" class="form-control" name="quantity" placeholder="Quantity">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-outline-primary">Assign teams</button>
+  </form>
+</div>
+
+<% if (pickerMethod) { %>
+  <% const randomizedMembersArray = cohort.members.split(",").sort(function(a, b){return 0.5 - Math.random()}) %> 
+  <div class="row">
+    <% if (pickerMethod == "totalTeams") { %>
+      <% membersPerTeam = Math.round(randomizedMembersArray.length / quantity) %>
+      <% for (let i = 1; i <= quantity; i++ ) { %>
+        <div class="col-sm-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Team <%= i %></h5>
+              <ol class="card-text">
+                <% for (let member of randomizedMembersArray.splice(0,membersPerTeam)) { %>
+                  <li class="card-text"><%=member%></li>
+                <% } %>
+                <% if (randomizedMembersArray.length > 0 && randomizedMembersArray.length < randomizedMembersArray.length / quantity) { %>
+                  <% for (let member of randomizedMembersArray) { %>
+                    <li class="card-text"><%=member%></li>
+                  <% } %>
+                <% } %>
+              </ol>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    <% } else {%>
+      <% const totalTeams = Math.round(randomizedMembersArray.length / quantity) %>
+      <% for (let i = 1; i <= totalTeams; i++) { %>
+        <div class="col-sm-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Team <%= i %></h5>
+              <ol class="card-text">
+                <% for (let member of randomizedMembersArray.splice(0,quantity)) { %>
+                  <li class="card-text"><%=member%></li>
+                <% } %>
+              </ol>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    <% } %>
+  </div>
+<% } %>
+
+
 <%- include('./partials/footer') %>

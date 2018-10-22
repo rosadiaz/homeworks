@@ -1,4 +1,4 @@
-<div class="border border-dark rounded p-3">
+<div class="border border-dark rounded p-3 w-50">
   <div>
     <h3><%= @post.title %></h1>
   </div>
@@ -27,9 +27,9 @@
   <div class="m-3">
     <%= form_for ([@post, @comment]) do |f| %>
       <% if @comment.errors.present? %>
-        <p>
-          <%= @comment.errors.full_messages %>
-        </p>
+        <% @post.errors.full_messages.each do |m| %>
+          <div class="alert alert-warning" role="alert"><%= m %></div>
+        <% end %>
       <% end %>
       <div class="form-group">
         <%= f.text_area :body, size: "60x3", class: "form-control" %>

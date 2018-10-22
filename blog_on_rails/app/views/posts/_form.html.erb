@@ -1,8 +1,8 @@
 <%= form_for @post do |f| %>
   <% if @post.errors.present? %>
-    <p>
-      <%= @post.errors.full_messages.join(", ") %>
-    </p>
+    <% @post.errors.full_messages.each do |m| %>
+      <div class="alert alert-warning" role="alert"><%= m %></div>
+    <% end %>
   <% end %>
   <div class="form-group">
     <%= f.label :title %>
@@ -11,5 +11,5 @@
   <div class="form-group">
     <%= f.text_area :body, size: "60x12", class: "form-control" %>
   </div>
-  <%= f.submit "Create", class: "btn btn-dark" %>
+  <%= f.submit "Save", class: "btn btn-dark" %>
 <% end %>

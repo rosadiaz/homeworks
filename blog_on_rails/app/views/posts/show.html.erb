@@ -42,7 +42,13 @@
     <ul>
       <% @comments.each do |comment| %>
         <li><%= comment.body %>
-          <small>- <%= distance_of_time_in_words(Time.now, comment.created_at) %> ago</small>
+          <small>- <%= distance_of_time_in_words(Time.now, comment.created_at) %> ago - 
+          <%= link_to(
+            "Delete",
+            post_comment_path(@post, comment),
+            method: :delete,
+            data: { confirm: "Bye bye comment?" }) %>
+          </small>
         </li>
       <% end %>
     </ul>

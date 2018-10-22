@@ -13,10 +13,10 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    # @answer = Answer.find params[:id]
-    @answer.destroy
+    @comment = Comment.find params[:id]
+    @comment.destroy
 
-    redirect_to question_path(@answer.question.id)
+    redirect_to post_path(@comment.post.id)
   end
 
   private

@@ -1,0 +1,9 @@
+<div>
+  <h1>All the posts</h1>
+
+  <ul>
+    <% @posts.each do |post| %>
+      <li> <%= link_to(post.title, post_path(post.id), class: "$link-color") %></li>
+    <% end %>
+  </ul>
+</div>

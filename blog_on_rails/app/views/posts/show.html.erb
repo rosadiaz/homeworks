@@ -1,0 +1,50 @@
+<div class="border border-dark rounded p-3">
+  <div>
+    <h3><%= @post.title %></h1>
+  </div>
+  <div>
+    <p><%= @post.body %></p>
+  </div>
+  <div class="d-flex">
+    <small class="ml-auto">
+    Created <%= distance_of_time_in_words(Time.now, @post.created_at) %> ago
+    </small>
+  </div>
+
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <%= link_to(
+      "Edit",
+      edit_post_path(@post.id),
+      class: "btn btn-sm btn-secondary"
+    ) %>
+    <%= link_to(
+      "Delete",
+      post_path(@post.id),
+      method: :delete,
+      data: { confirm: "This post will be gone forever" },
+      class: "btn btn-sm btn-outline-secondary") %>
+  </div>
+  <div class="m-3">
+    <%= form_for ([@post, @comment]) do |f| %>
+      <% if @comment.errors.present? %>
+        <p>
+          <%= @comment.errors.full_messages %>
+        </p>
+      <% end %>
+      <div class="form-group">
+        <%= f.text_area :body, size: "60x3", class: "form-control" %>
+      </div>
+      <%= f.submit "Comment", class: "btn btn-sm btn-outline-dark" %>
+    <% end %>
+  </div>
+  <div>
+    <h4>Comments:</h4>
+    <ul>
+      <% @comments.each do |comment| %>
+        <li><%= comment.body %>
+          <small>- <%= distance_of_time_in_words(Time.now, comment.created_at) %> ago</small>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

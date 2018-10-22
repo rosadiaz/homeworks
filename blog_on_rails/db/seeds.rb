@@ -9,8 +9,15 @@ Post.destroy_all
 NUM_OF_POSTS = 100
 
 NUM_OF_POSTS.times do
-  Post.create title: ( "#{Faker::HarryPotter.spell} in #{Faker::HarryPotter.house}" ),
+  p = Post.create title: ( "#{Faker::HarryPotter.spell} in #{Faker::HarryPotter.house}" ),
     body: (Faker::HarryPotter.quote)
+  if p.valid?
+    rand(0..5).times do
+      p.comments << Comment.new( body: Faker::HarryPotter.spell )
+    end
+  end
+  
 end
 
-puts ("🧙‍ Generated #{Post.count} 🧙‍")
+puts ("🧙‍ Generated #{Post.count} posts 🧙‍")
+puts ("💭 Generated #{Comment.count} comments")

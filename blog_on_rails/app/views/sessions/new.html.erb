@@ -1,4 +1,4 @@
-<%= form_for @user do |f| %>
+<%= form_for @user, url: session_path do |f| %>
   <% if @user.errors.present? %>
     <% @user.errors.full_messages.each do |m| %>
       <div class="alert alert-warning" role="alert"><%= m %></div>

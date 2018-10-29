@@ -24,15 +24,19 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find params[:id]
+    authorize! :destroy, @post
     @post.destroy
     redirect_to posts_path
   end
 
   def edit
     @post = Post.find params[:id]
+    authorize! :edit, @post
   end
   def update
     @post = Post.find params[:id]
+    authorize! :update, @post
+
     if @post.update post_params
       redirect_to post_path(@post.id)
     else

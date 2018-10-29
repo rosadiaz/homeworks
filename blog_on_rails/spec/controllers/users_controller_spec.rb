@@ -23,6 +23,12 @@ RSpec.describe UsersController, type: :controller do
         post(:create, params: {user: FactoryBot.attributes_for(:user)})
         expect(response).to redirect_to(root_path)
       end
+      it "stores user_id in session" do
+        # post(:create, :params => {:user => FactoryBot.attributes_for(:user)})
+        post(:create, params: {user: FactoryBot.attributes_for(:user)})
+        expect(session[:user_id]).to be
+      end
+
     end
     context "with INvalid user" do
       # it "does not add new user to db" do

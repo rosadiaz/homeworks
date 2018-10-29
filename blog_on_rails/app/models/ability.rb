@@ -6,6 +6,9 @@ class Ability
     can :manage, Post do |post|
       user == post.user
     end
+    can :destroy, Comment do |comment|
+      user == comment.post.user
+    end
     can :manage, Comment do |comment|
       user == comment.user
     end

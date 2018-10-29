@@ -5,15 +5,32 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+User.destroy_all
 Post.destroy_all
+Comment.destroy_all
+
+NUM_OF_USERS = 40
 NUM_OF_POSTS = 100
 
+NUM_OF_USERS.times do |n|
+  User.create(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    email: Faker::Internet.email.sub("@", ".#{n}@"),
+    password: "supersecret"
+  )
+end
+
+all_users = User.all
 NUM_OF_POSTS.times do
-  p = Post.create title: ( "#{Faker::HarryPotter.spell} in #{Faker::HarryPotter.house}" ),
-    body: (Faker::HarryPotter.quote)
+  p = Post.create(
+    title: ( "#{Faker::HarryPotter.spell} in #{Faker::HarryPotter.house}" ),
+    body: (Faker::HarryPotter.quote), 
+    user_id: all_users.sample.id
+  )
   if p.valid?
     rand(0..5).times do
-      p.comments << Comment.new( body: Faker::HarryPotter.spell )
+      p.comments << Comment.new( body: Faker::HarryPotter.spell, user_id: all_users.sample.id )
     end
   end
   

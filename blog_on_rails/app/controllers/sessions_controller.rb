@@ -12,9 +12,17 @@ class SessionsController < ApplicationController
       render :new
     end
   end
+  def destroy
+    session[:user_id] = nil
+    flash[:success] = "Thank you for blogging"
+    redirect_to new_session_path
+  end
+
+  private
   def user_params
     params
       .require(:user)
       .permit(:password, :email)
   end
+
 end

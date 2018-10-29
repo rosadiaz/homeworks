@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user!
   def create
     @post = Post.find params[:post_id]
     @comment = Comment.new comment_params
@@ -7,7 +8,7 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to post_path(@post)
     else
-      @comment = @post.comment.order(created_at: :desc)
+      @comment = @post.comments.order(created_at: :desc)
       render "posts/show"
     end
   end

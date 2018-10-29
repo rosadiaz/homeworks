@@ -5,6 +5,14 @@ RSpec.describe User, type: :model do
     user = FactoryBot.create(:user)
     expect(User.last.password_digest).to_not eq("supersecret")
   end
+  it "titleizes first name" do
+    user = FactoryBot.create(:user, first_name: "chano")
+    expect(user.first_name).to eq("Chano")
+  end
+  it "titleizes last name" do
+    user = FactoryBot.create(:user, last_name: "perez")
+    expect(user.last_name).to eq("Perez")
+  end
   describe "validations" do
     it "requires an email" do
       user = FactoryBot.build(:user, email: nil)

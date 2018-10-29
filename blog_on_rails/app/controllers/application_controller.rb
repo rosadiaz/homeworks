@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     unless current_user
       flash[:alert] = "Please sign in"
-      redirect_to root_path
+      redirect_to new_session_path
     end
   end
 

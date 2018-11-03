@@ -16,13 +16,20 @@
 </head>
 <body>
   <main class="container">
-    <h1>Hangman</h1>
+    <div class="container d-flex">
+      <h1>Hangman:</h1>
+      <h3 id="hint" class="d-none align-self-center ml-3">dog breeds</h3>
+    </div>
+    <div class="container">
+      <button id="hint-button" type="button" class="btn btn-warning btn-block">Hint</button>
+      <button id="cheater" type="button" class="btn btn-danger d-none btn-block">YOU CHEATER!!</button>
+    </div>
 
     <div id="drawing" class="container">
-        <img src="hangman-assets/0_gallows.jpg" class="mx-auto d-block" alt="...">
+        <img src="images/0_gallows.jpg" class="mx-auto d-block" alt="...">
     </div>
     
-    <div id="guessing-area" class="row justify-content-center p-5">
+    <div id="mystery-word-area" class="row justify-content-center p-5">
     </div>
     <div class="container w-50">
       <div id="letters" class="row justify-content-center">

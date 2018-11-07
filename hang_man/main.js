@@ -1,21 +1,21 @@
-const mystery_words_array = [
-  "Malamute",
-  "Poodle",
-  "Labrador",
-  "Spaniel",
-  "Bloodhound",
-  "Sheppard",
-  "Weiner",
-  "Bulldog",
-  "Boxer",
-  "Chihuahua",
-  "Mutt",
-  "Weimaraner",
-  "Pug"
-]
-const mystery_word = mystery_words_array[Math.floor(Math.random()*mystery_words_array.length)].toLowerCase();
-console.log(mystery_word)
-const mystery_letter_array = mystery_word.split("");
+// const mystery_words_array = [
+//   "Malamute",
+//   "Poodle",
+//   "Labrador",
+//   "Spaniel",
+//   "Bloodhound",
+//   "Sheppard",
+//   "Weiner",
+//   "Bulldog",
+//   "Boxer",
+//   "Chihuahua",
+//   "Mutt",
+//   "Weimaraner",
+//   "Pug"
+// ]
+// const mystery_word = mystery_words_array[Math.floor(Math.random()*mystery_words_array.length)].toLowerCase();
+// console.log(mystery_word)
+// const mystery_letter_array = mystery_word.split("");
 let wrong_attempt_counter = 0;
 let win = 0;
 const you_win_sound = new Audio(`sounds/win.wav`);
@@ -24,7 +24,7 @@ const you_loose_sound = new Audio(`sounds/fart.wav`);
 $(document).ready(function (){
 
   drawKeyboard()
-  drawMysteryWord(mystery_word)
+  drawMysteryWord();
 
   document.addEventListener('keydown', event => {
     const { keyCode } = event;
@@ -38,14 +38,16 @@ $(document).ready(function (){
 
   })
   document.querySelector("#hint-button").addEventListener("mouseenter", () => {
-    document.querySelector("#hint-button").classList.add("d-none");
-    document.querySelector("#cheater").classList.remove("d-none");
-    document.querySelector("#hint").classList.remove("d-none");
+    $(["#hint-button", "#hint", "#cheater"]).toggleClass("d-none");
+    // document.querySelector("#hint-button").classList.add("d-none");
+    // document.querySelector("#cheater").classList.remove("d-none");
+    // document.querySelector("#hint").classList.remove("d-none");
   });
   document.querySelector("#cheater").addEventListener("mouseleave", () => {
-    document.querySelector("#hint-button").classList.remove("d-none");
-    document.querySelector("#cheater").classList.add("d-none");
-    document.querySelector("#hint").classList.add("d-none");
+    $(["#hint-button", "#hint", "#cheater"]).toggleClass("d-none");
+    // document.querySelector("#hint-button").classList.remove("d-none");
+    // document.querySelector("#cheater").classList.add("d-none");
+    // document.querySelector("#hint").classList.add("d-none");
   });
 })
 drawKeyboard = () => {
@@ -63,7 +65,32 @@ drawKeyboard = () => {
 }
 
 drawMysteryWord = (mystery_word) => {
-  for (let i = 0; i < mystery_word.length; i++) {
+  let word;
+  const mystery_words_array = [
+    "Malamute",
+    "Poodle",
+    "Labrador",
+    "Spaniel",
+    "Bloodhound",
+    "Sheppard",
+    "Weiner",
+    "Bulldog",
+    "Boxer",
+    "Chihuahua",
+    "Mutt",
+    "Weimaraner",
+    "Pug"
+  ]
+  if (mystery_word) {
+    word = mystery_word;
+  } else {
+    word = mystery_words_array[Math.floor(Math.random()*mystery_words_array.length)].toLowerCase();    
+  }
+  const mystery_letter_array = word.split("");
+  // const mystery_word = mystery_words_array[Math.floor(Math.random()*mystery_words_array.length)].toLowerCase();
+  console.log(word)
+
+  for (let i = 0; i < word.length; i++) {
     const div = document.createElement("div");
     div.classList.add("col-auto", "p-1");
     const button = document.createElement("button");

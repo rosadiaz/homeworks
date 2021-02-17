@@ -1,0 +1,27 @@
+{
+  "name": "team_picker",
+  "version": "1.0.0",
+  "description": "Team picker homework project",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "db:create": "createdb -e team_picker",
+    "db:drop": "dropdb -e team_picker",
+    "db:migrate": "knex migrate:latest",
+    "db:reset": "npm run db:drop && npm run db:create && npm run db:migrate"
+  },
+  "author": "Rosa Diaz Jara",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "knex": "^0.15.2",
+    "method-override": "^3.0.0",
+    "morgan": "^1.9.1",
+    "pg": "^7.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}
